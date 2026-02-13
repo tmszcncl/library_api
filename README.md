@@ -128,6 +128,52 @@ curl -i -X GET http://localhost:3000/books/123456
 
 ---
 
+#### Borrow a book
+`POST /books/:serial_number/borrow/:reader_card_number`
+
+**Request Example:**
+```bash
+curl -X POST http://localhost:3000/books/123456/borrow/111222
+```
+
+**Response Example (201 Created):**
+```json
+{
+  "id": 5,
+  "book_id": 1,
+  "reader_id": 1,
+  "borrowed_at": "2026-02-13T23:25:00.000Z",
+  "returned_at": null,
+  "created_at": "2026-02-13T23:25:00.000Z",
+  "updated_at": "2026-02-13T23:25:00.000Z"
+}
+```
+
+---
+
+#### Return a book
+`POST /books/:serial_number/return`
+
+**Request Example:**
+```bash
+curl -X POST http://localhost:3000/books/123456/return
+```
+
+**Response Example (200 OK):**
+```json
+{
+  "id": 5,
+  "book_id": 1,
+  "reader_id": 1,
+  "borrowed_at": "2026-02-13T23:25:00.000Z",
+  "returned_at": "2026-02-13T23:30:00.000Z",
+  "created_at": "2026-02-13T23:25:00.000Z",
+  "updated_at": "2026-02-13T23:30:00.000Z"
+}
+```
+
+---
+
 #### Add a new book
 `POST /books`
 

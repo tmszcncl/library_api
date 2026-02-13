@@ -1,5 +1,5 @@
 class BooksController < ApplicationController
-  before_action :set_book, only: [ :show, :destroy ]
+  before_action :set_book, only: [ :show, :destroy, :borrow, :return ]
 
   def index
     books = Book.all.includes(:borrowings)
@@ -18,6 +18,43 @@ class BooksController < ApplicationController
         }
       }
     )
+  end
+
+  def borrow
+    if @book.borrowed?
+      render json: { error: "Book is already borrowed" }, status: :unprocessable_entity
+      return
+    end
+
+    reader = Reader.find_by(library_card_number: params[:reader_card_number])
+
+    if reader.nil?
+      render json: { error: "Reader not found" }, status: :not_found
+      return
+    end
+
+    borrowing = @book.borrowings.new(reader: reader, borrowed_at: Time.current)
+
+    if borrowing.save
+      render json: borrowing, status: :created
+    else
+      render json: { errors: borrowing.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  def return
+    borrowing = @book.borrowings.find_by(returned_at: nil)
+
+    if borrowing.nil?
+      render json: { error: "Book is not currently borrowed" }, status: :unprocessable_entity
+      return
+    end
+
+    if borrowing.update(returned_at: Time.current)
+      render json: borrowing, status: :ok
+    else
+      render json: { errors: borrowing.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   def create

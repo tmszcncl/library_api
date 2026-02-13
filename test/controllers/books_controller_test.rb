@@ -37,16 +37,64 @@ class BooksControllerTest < ActionDispatch::IntegrationTest
     assert_equal book.title, json_response["title"]
     assert_equal book.serial_number, json_response["serial_number"]
     assert_equal "borrowed", json_response["status"]
-    
+
     # Check history
     assert_instance_of Array, json_response["borrowings"]
     assert_not_empty json_response["borrowings"]
-    
+
     borrowing = json_response["borrowings"].first
     assert_not_nil borrowing["borrowed_at"]
     assert_not_nil borrowing["reader"]
     assert_not_nil borrowing["reader"]["full_name"]
     assert_not_nil borrowing["reader"]["email"]
+  end
+
+  test "should borrow book" do
+    book = books(:two) # books(:two) is available
+    reader = readers(:one)
+
+    post borrow_book_url(serial_number: book.serial_number, reader_card_number: reader.library_card_number),
+         as: :json
+
+    assert_response :created
+    json_response = JSON.parse(response.body)
+    assert_equal book.id, json_response["book_id"]
+    assert_equal reader.id, json_response["reader_id"]
+    assert_not_nil json_response["borrowed_at"]
+    assert_nil json_response["returned_at"]
+  end
+
+  test "should not borrow already borrowed book" do
+    book = books(:one) # books(:one) is borrowed
+    reader = readers(:two)
+
+    post borrow_book_url(serial_number: book.serial_number, reader_card_number: reader.library_card_number),
+         as: :json
+
+    assert_response :unprocessable_entity
+    json_response = JSON.parse(response.body)
+    assert_equal "Book is already borrowed", json_response["error"]
+  end
+
+  test "should return borrowed book" do
+    book = books(:one) # books(:one) is borrowed
+
+    post return_book_url(serial_number: book.serial_number), as: :json
+
+    assert_response :ok
+    json_response = JSON.parse(response.body)
+    assert_equal book.id, json_response["book_id"]
+    assert_not_nil json_response["returned_at"]
+  end
+
+  test "should not return book that is not borrowed" do
+    book = books(:two) # books(:two) is available
+
+    post return_book_url(serial_number: book.serial_number), as: :json
+
+    assert_response :unprocessable_entity
+    json_response = JSON.parse(response.body)
+    assert_equal "Book is not currently borrowed", json_response["error"]
   end
 
   test "should create book" do
