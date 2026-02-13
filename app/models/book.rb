@@ -14,7 +14,7 @@
 #  index_books_on_serial_number  (serial_number) UNIQUE
 #
 class Book < ApplicationRecord
-  has_many :borrowings
+  has_many :borrowings, dependent: :destroy
   has_many :readers, through: :borrowings
 
   validates :serial_number, presence: true, uniqueness: true, format: { with: /\A\d{6}\z/, message: "must be a six-digit number" }

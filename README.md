@@ -58,10 +58,46 @@ docker compose run --rm web bin/rails test
 
 ### Books
 
+---
+
+#### List all books
+`GET /books`
+
+**Request Example:**
+```bash
+curl -X GET http://localhost:3000/books
+```
+
+**Response Example (200 OK):**
+```json
+[
+  {
+    "id": 1,
+    "author": "F. Scott Fitzgerald",
+    "serial_number": "123456",
+    "title": "The Great Gatsby",
+    "status": "borrowed",
+    "created_at": "2026-02-13T22:45:00.000Z",
+    "updated_at": "2026-02-13T22:45:00.000Z"
+  },
+  {
+    "id": 2,
+    "author": "George Orwell",
+    "serial_number": "654321",
+    "title": "1984",
+    "status": "available",
+    "created_at": "2026-02-13T22:45:00.000Z",
+    "updated_at": "2026-02-13T22:45:00.000Z"
+  }
+]
+```
+
+---
+
 #### Add a new book
 `POST /books`
 
-Example request:
+**Request Example:**
 ```bash
 curl -X POST http://localhost:3000/books \
      -H "Content-Type: application/json" \
@@ -74,7 +110,7 @@ curl -X POST http://localhost:3000/books \
      }'
 ```
 
-Example response (201 Created):
+**Response Example (201 Created):**
 ```json
 {
   "id": 3,
@@ -85,3 +121,16 @@ Example response (201 Created):
   "updated_at": "2026-02-13T22:45:00.000Z"
 }
 ```
+
+---
+
+#### Delete a book
+`DELETE /books/:serial_number`
+
+**Request Example:**
+```bash
+curl -i -X DELETE http://localhost:3000/books/123456
+```
+
+**Response Example (204 No Content):**
+*Empty body*

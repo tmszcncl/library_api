@@ -46,7 +46,7 @@ class BooksControllerTest < ActionDispatch::IntegrationTest
 
   test "should not create book with duplicate serial number" do
     Book.create!(@book_params[:book])
-    
+
     assert_no_difference("Book.count") do
       post books_url, params: @book_params, as: :json
     end
@@ -54,5 +54,21 @@ class BooksControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
     json_response = JSON.parse(response.body)
     assert_includes json_response["errors"], "Serial number has already been taken"
+  end
+
+  test "should destroy book" do
+    book = books(:one)
+    assert_difference("Book.count", -1) do
+      delete book_url(serial_number: book.serial_number), as: :json
+    end
+
+    assert_response :no_content
+  end
+
+  test "should return not found for non-existent book" do
+    delete book_url(serial_number: "000000"), as: :json
+    assert_response :not_found
+    json_response = JSON.parse(response.body)
+    assert_equal "Book not found", json_response["error"]
   end
 end
