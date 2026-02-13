@@ -1,0 +1,24 @@
+# == Schema Information
+#
+# Table name: books
+#
+#  id            :bigint           not null, primary key
+#  author        :string
+#  serial_number :string
+#  title         :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#
+# Indexes
+#
+#  index_books_on_serial_number  (serial_number) UNIQUE
+#
+one:
+  serial_number: "123456"
+  title: "The Great Gatsby"
+  author: "F. Scott Fitzgerald"
+
+two:
+  serial_number: "654321"
+  title: "1984"
+  author: "George Orwell"

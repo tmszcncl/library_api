@@ -1,0 +1,25 @@
+# == Schema Information
+#
+# Table name: readers
+#
+#  id                  :bigint           not null, primary key
+#  email               :string
+#  full_name           :string
+#  library_card_number :string
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#
+# Indexes
+#
+#  index_readers_on_email                (email) UNIQUE
+#  index_readers_on_library_card_number  (library_card_number) UNIQUE
+#
+one:
+  library_card_number: "111111"
+  full_name: "John Doe"
+  email: "john@example.com"
+
+two:
+  library_card_number: "222222"
+  full_name: "Jane Smith"
+  email: "jane@example.com"

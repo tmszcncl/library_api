@@ -1,24 +1,57 @@
-# README
+# Library API
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is a Rails-based Library API.
 
-Things you may want to cover:
+## Docker Development Environment
 
-* Ruby version
+The application is fully containerized for development.
 
-* System dependencies
+### Setup and Running the App
 
-* Configuration
+1.  **Build and Start the containers:**
+    ```bash
+    docker compose up --build
+    ```
+    This will build the image, install gems, and start both the Rails server and the PostgreSQL database. The app will be accessible at `http://localhost:3000`.
 
-* Database creation
+2.  **Run Migrations:**
+    If you have new migrations, run them in the web container:
+    ```bash
+    docker compose run --rm web bin/rails db:migrate
+    ```
 
-* Database initialization
+3.  **Annotate Models:**
+    Models are automatically annotated after migrations. To run it manually:
+    ```bash
+    docker compose run --rm web bin/rails g annotate_rb:install
+    ```
 
-* How to run the test suite
+### Running Tests
 
-* Services (job queues, cache servers, search engines, etc.)
+To run the full Minitest suite:
 
-* Deployment instructions
+```bash
+docker compose run --rm web bin/rails test
+```
 
-* ...
+### Useful Commands
+
+*   **Open a Rails console:**
+    ```bash
+    docker compose run --rm web bin/rails console
+    ```
+*   **Run a one-off command:**
+    ```bash
+    docker compose run --rm web [command]
+    ```
+*   **Stop the containers:**
+    ```bash
+    docker compose down
+    ```
+
+## Technology Stack
+
+*   **Ruby:** 3.4.7
+*   **Rails:** 8.1.2
+*   **Database:** PostgreSQL 16
+*   **Gems:** `annotaterb` for model documentation.
