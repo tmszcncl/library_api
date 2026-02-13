@@ -2,13 +2,15 @@
 #
 # Table name: borrowings
 #
-#  id          :bigint           not null, primary key
-#  borrowed_at :datetime
-#  returned_at :datetime
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  book_id     :bigint           not null
-#  reader_id   :bigint           not null
+#  id                        :bigint           not null, primary key
+#  borrowed_at               :datetime
+#  due_date_reminder_sent_at :datetime
+#  reminder_3_days_sent_at   :datetime
+#  returned_at               :datetime
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#  book_id                   :bigint           not null
+#  reader_id                 :bigint           not null
 #
 # Indexes
 #
