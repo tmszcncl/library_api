@@ -54,4 +54,34 @@ docker compose run --rm web bin/rails test
 *   **Ruby:** 3.4.7
 *   **Rails:** 8.1.2
 *   **Database:** PostgreSQL 16
-*   **Gems:** `annotaterb` for model documentation.
+## API Usage
+
+### Books
+
+#### Add a new book
+`POST /books`
+
+Example request:
+```bash
+curl -X POST http://localhost:3000/books \
+     -H "Content-Type: application/json" \
+     -d '{
+       "book": {
+         "title": "The Hobbit",
+         "author": "J.R.R. Tolkien",
+         "serial_number": "123456"
+       }
+     }'
+```
+
+Example response (201 Created):
+```json
+{
+  "id": 3,
+  "author": "J.R.R. Tolkien",
+  "serial_number": "123456",
+  "title": "The Hobbit",
+  "created_at": "2026-02-13T22:45:00.000Z",
+  "updated_at": "2026-02-13T22:45:00.000Z"
+}
+```
