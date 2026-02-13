@@ -20,4 +20,12 @@ class Book < ApplicationRecord
   validates :serial_number, presence: true, uniqueness: true, format: { with: /\A\d{6}\z/, message: "must be a six-digit number" }
   validates :title, presence: true
   validates :author, presence: true
+
+  def borrowed?
+    borrowings.where(returned_at: nil).exists?
+  end
+
+  def status
+    borrowed? ? "borrowed" : "available"
+  end
 end

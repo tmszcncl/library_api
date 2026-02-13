@@ -11,6 +11,23 @@ class BooksControllerTest < ActionDispatch::IntegrationTest
     }
   end
 
+  test "should get index" do
+    get books_url, as: :json
+    assert_response :success
+    json_response = JSON.parse(response.body)
+
+    assert_instance_of Array, json_response
+    assert_equal Book.count, json_response.size
+
+    # book(:one) is borrowed in borrowings.yml
+    book_one = json_response.find { |b| b["serial_number"] == books(:one).serial_number }
+    assert_equal "borrowed", book_one["status"]
+
+    # book(:two) has a returned borrowing in borrowings.yml
+    book_two = json_response.find { |b| b["serial_number"] == books(:two).serial_number }
+    assert_equal "available", book_two["status"]
+  end
+
   test "should create book" do
     assert_difference("Book.count") do
       post books_url, params: @book_params, as: :json

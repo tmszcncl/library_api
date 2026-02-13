@@ -1,6 +1,11 @@
 class BooksController < ApplicationController
   before_action :set_book, only: [ :destroy ]
 
+  def index
+    books = Book.all.includes(:borrowings)
+    render json: books.as_json(methods: :status)
+  end
+
   def create
     book = Book.new(book_params)
 
