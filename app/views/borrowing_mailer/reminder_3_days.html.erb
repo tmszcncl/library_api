@@ -1,0 +1,10 @@
+<h1>Reminder: Book due in 3 days</h1>
+
+<p>Dear <%= @reader.full_name %>,</p>
+
+<p>This is a reminder that the book "<%= @book.title %>" by <%= @book.author %> is due on <%= @due_date.strftime("%B %d, %Y") %>.</p>
+
+<p>Please return it to the library by the due date.</p>
+
+<p>Thank you,</p>
+<p>The Library Team</p>
