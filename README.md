@@ -94,6 +94,40 @@ curl -X GET http://localhost:3000/books
 
 ---
 
+#### Retrieve information about a specific book
+`GET /books/:serial_number`
+
+**Request Example:**
+```bash
+curl -i -X GET http://localhost:3000/books/123456
+```
+
+**Response Example (200 OK):**
+```json
+{
+  "id": 1,
+  "author": "F. Scott Fitzgerald",
+  "serial_number": "123456",
+  "title": "The Great Gatsby",
+  "status": "borrowed",
+  "created_at": "2026-02-13T22:04:08.283Z",
+  "updated_at": "2026-02-13T22:04:08.283Z",
+  "borrowings": [
+    {
+      "borrowed_at": "2026-02-13T22:30:00.000Z",
+      "returned_at": null,
+      "reader": {
+        "full_name": "John Doe",
+        "email": "john.doe@example.com",
+        "library_card_number": "111222"
+      }
+    }
+  ]
+}
+```
+
+---
+
 #### Add a new book
 `POST /books`
 

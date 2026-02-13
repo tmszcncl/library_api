@@ -28,6 +28,27 @@ class BooksControllerTest < ActionDispatch::IntegrationTest
     assert_equal "available", book_two["status"]
   end
 
+  test "should show book with history" do
+    book = books(:one)
+    get book_url(serial_number: book.serial_number), as: :json
+    assert_response :success
+    json_response = JSON.parse(response.body)
+
+    assert_equal book.title, json_response["title"]
+    assert_equal book.serial_number, json_response["serial_number"]
+    assert_equal "borrowed", json_response["status"]
+    
+    # Check history
+    assert_instance_of Array, json_response["borrowings"]
+    assert_not_empty json_response["borrowings"]
+    
+    borrowing = json_response["borrowings"].first
+    assert_not_nil borrowing["borrowed_at"]
+    assert_not_nil borrowing["reader"]
+    assert_not_nil borrowing["reader"]["full_name"]
+    assert_not_nil borrowing["reader"]["email"]
+  end
+
   test "should create book" do
     assert_difference("Book.count") do
       post books_url, params: @book_params, as: :json
