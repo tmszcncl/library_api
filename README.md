@@ -214,3 +214,29 @@ curl -i -X DELETE http://localhost:3000/books/123456
 
 **Response Example (204 No Content):**
 *Empty body*
+
+### Readers
+
+---
+
+#### List all readers
+`GET /readers`
+
+**Request Example:**
+```bash
+curl -X GET http://localhost:3000/readers
+```
+
+**Response Example (200 OK):**
+```json
+[
+  {
+    "id": 1,
+    "full_name": "John Doe",
+    "email": "john.doe@example.com",
+    "library_card_number": "111222",
+    "created_at": "2026-02-13T22:45:00.000Z",
+    "updated_at": "2026-02-13T22:45:00.000Z"
+  }
+]
+```
